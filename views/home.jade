@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 HaloApp CMS
+  p.lead HalpApp Content management system.
+  hr
+  .row
+    .col-sm-6
+     if(!user)
+        h2 Admin?
+        p
+            a.btn.btn-primary(href='/login', role='button') Login
