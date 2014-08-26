@@ -1,16 +1,37 @@
 
+var mongoose = require('mongoose');
 var Story = require("../models/Story");
+var ObjectId = mongoose.Types.ObjectId;
 
 exports.getAllStories = function(req, res){
 
 };
 
 exports.getAddStory = function(req, res){
-    res.render('story/add')
+    res.render('story/add',{
+        title:'Add Story'
+    })
 };
 
+exports.getStory = function(req,res,next){
+    var storyId = req.params.id;
+    if(!storyId){
+        req.flash('errors', {msg: "no story with matching id was found"});
+        res.status(404).end();
+        return;
+    }
 
-exports.postAddStory = function(req, res){
+    console.log(storyId);
+    var _id =  new ObjectId(storyId);
+    Story.findById({_id:_id},function(err, story){
+        if(err) return next(err)
+        res.render('story/single-story-page',{
+            story: story
+        });
+    })
+};
+
+exports.postAddStory = function(req, res, next){
     req.assert('authorName', 'required').notEmpty();
     req.assert('content', 'Story body must be provided').notEmpty();
 
@@ -38,9 +59,11 @@ exports.postAddStory = function(req, res){
         if (err) return next(err);
         console.log('story saved');
         req.flash('success', { msg: 'Story has been saved!' });
-        res.redirect('/story/add');
+        res.redirect('/story/' + story._id);
     });
 };
+
+
 
 function extractImage(authorImage) {
     //todo: add logic which saves the image to other location on disk.

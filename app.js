@@ -81,7 +81,7 @@ app.use(session({
   })
 }));
 app.use(multer({
-    dest: './tmp/',
+    dest: path.join(__dirname, 'public'),
     rename: function (fieldname, filename) {
         return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
     }

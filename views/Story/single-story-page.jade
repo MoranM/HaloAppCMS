@@ -1,0 +1,10 @@
+extends ../layout
+block content
+    .page-header
+        h3 Story
+    .story-container
+        span Author Name: #{story.authorName}
+        span story content:
+        p #{story.content}
+        .author-image-container
+            img(src='#{story.authorImageUrl}')
