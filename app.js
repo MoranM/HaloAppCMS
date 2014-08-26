@@ -11,6 +11,7 @@ var logger = require('morgan');
 var errorHandler = require('errorhandler');
 var csrf = require('lusca').csrf();
 var methodOverride = require('method-override');
+var multer  = require('multer')
 
 var _ = require('lodash');
 var MongoStore = require('connect-mongo')({ session: session });
@@ -26,7 +27,6 @@ var adminSetup = require('./controllers/admin');
 
 
 var secrets = require('./config/secrets');
-var passportConf = require('./config/passport');
 
 /**
  * Create Express server.
@@ -79,6 +79,12 @@ app.use(session({
     url: secrets.db,
     auto_reconnect: true
   })
+}));
+app.use(multer({
+    dest: './tmp/',
+    rename: function (fieldname, filename) {
+        return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
