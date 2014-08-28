@@ -24,13 +24,7 @@ var connectAssets = require('connect-assets');
 var fs = require("fs");
 var routesPath = './routes/';
 var adminSetup = require('./controllers/admin');
-
-
 var secrets = require('./config/secrets');
-
-/**
- * Create Express server.
- */
 
 var app = express();
 
@@ -81,9 +75,9 @@ app.use(session({
   })
 }));
 app.use(multer({
-    dest: path.join(__dirname, 'public'),
+    dest:secrets.imagesPath,
     rename: function (fieldname, filename) {
-        return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+        return filename.replace(/\W+/g, '-').toLowerCase() + '_'+ Date.now()
     }
 }));
 app.use(passport.initialize());
@@ -108,6 +102,8 @@ app.use(function(req, res, next) {
   req.session.returnTo = req.path;
   next();
 });
+
+app.use(express.static(secrets.imagesPath));
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 
@@ -124,7 +120,7 @@ fs.readdirSync(routesPath).forEach(function (file) {
 app.use(errorHandler());
 
 app.listen(app.get('port'), function() {
-  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
+  console.log(secrets.imagesPath);
 });
 
 module.exports = app;

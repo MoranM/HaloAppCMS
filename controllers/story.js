@@ -68,5 +68,10 @@ exports.postAddStory = function(req, res, next){
 function extractImage(authorImage) {
     //todo: add logic which saves the image to other location on disk.
     //or check if the path can be set in advance.
-    return authorImage.path;
+    var path = authorImage.path;
+
+    var splited =  path.split('\\');
+
+    return "/" + splited[splited.length -1];
+
 }

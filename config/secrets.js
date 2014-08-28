@@ -1,8 +1,12 @@
+var path = require('path');
+
 
 module.exports = {
 
   db: process.env.MONGODB|| 'mongodb://localhost:27017/light-hs',
-
+  imagesPath: !!process.env.CLOUD_DIR
+      ? path.join(process.env.CLOUD_DIR+"",'images')
+      : './public/images',
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
 
   facebook: {
