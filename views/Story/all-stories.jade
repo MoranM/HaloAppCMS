@@ -5,13 +5,17 @@ extends ../layout
 block content
     .page-header
         h3 All Stories
-            #stories-container
-                each story, s in stories
-                    .story-container.row
-                        span.author-name.col-sm-6 author name #{story.authorName}
-                        p.story-content.col-sm-6 #{story.content}
-                        .author-image-container.col-sm-6
-                            img(src='#{story.authorImageUrl}')
-                        .actions.col-sm-6
-                            a(href='/story/delete/#{story._id}') delete story
-                            a(href='#') edit
+        #stories-container
+            each story, s in stories
+                .story-container.row.show-grid
+                    .col-sm-3
+                        span.author-name author name #{story.authorName}
+                    .col-sm-3
+                        | Content:
+                        p.story-content #{story.content}
+                    .col-sm-3.author-image-container
+                        img.img-circle(src='#{story.authorImageUrl}')
+                    .actions.col-sm-3
+                        a(href='/story/delete/#{story._id}') delete story
+                        span.separator |
+                        a(href='#') edit
