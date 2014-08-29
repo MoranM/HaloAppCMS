@@ -3,8 +3,39 @@ var mongoose = require('mongoose');
 var Story = require("../models/Story");
 var ObjectId = mongoose.Types.ObjectId;
 
-exports.getAllStories = function(req, res){
+exports.getAllStories = function(req, res, next){
+    Story.find(function(err, stories){
+        if(err) return next(err);
 
+        if(stories.length ==0){
+            req.flash('errors', {msg:"No stories found, please add story first."});
+            res.redirect('/story/add');
+        }
+
+        res.render("story/all-stories", {
+            title:'Edit Stories',
+            stories: stories
+        })
+    });
+};
+
+exports.deleteStory = function(req,res,next){
+    var storyId = req.params.id;
+    if(!storyId){
+        req.flash('errors', {msg: "no story with matching id was found"});
+        res.status(404).end();
+    }
+
+    Story.remove({ _id: storyId }, function(err) {
+        if (!err) {
+            req.flash('success', {msg: "Story was removed"});
+            res.redirect("/story/all")
+        }
+        else {
+            req.flash('errors', {msg: "Story was not removed. db-error:" + err});
+            res.redirect("/story/all")
+        }
+    });
 };
 
 exports.getAddStory = function(req, res){

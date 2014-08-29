@@ -14,7 +14,9 @@
         li(class=title=='Home'?'active':undefined)
           a(href='/') Home
         li(class=title=='Add Story'?'active':undefined)
-          a(href='/story/add') Add Story
+            a(href='/story/add') Add Story
+        li(class=title=='Edit Stories'?'active':undefined)
+            a(href='/story/all') Edit Stories
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)
