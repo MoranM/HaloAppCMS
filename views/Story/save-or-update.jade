@@ -1,0 +1,32 @@
+extends ../layout
+
+
+block content
+    .page-header
+        h3=story? 'Update Story' : 'Add Story'
+
+    form#upload-story.form-horizontal(action='/story/save-or-update', method='POST', enctype="multipart/form-data")
+        input(type='hidden', name='_csrf', value=_csrf)
+        input(type='hidden', name='_id', value=story?'#{story._id}':'')
+        .form-group
+            label.col-sm-2.control-label(for='authorName') Author Name:
+            .col-sm-4
+                input.form-control(type='text', name='authorName', id='authorNameField', placeholder='enter name', value=story?'#{story.authorName}':'')
+
+        .form-group
+            label.col-sm-2.control-label(for='content') Story:
+            .col-sm-4
+                if !story
+                    textarea.form-control(rows='4', cols='50', name='content', form='upload-story', placeholder=story?'':'story text goes here')
+                else
+                    textarea.form-control(rows='4', cols='50', name='content', form='upload-story')
+                        | #{story.content}
+        .form-group
+            label.col-sm-2.control-label(for='authorImage') Author Image
+            .col-sm-4
+                input(type="file", name="authorImage")
+        .form-group
+            .col-sm-offset-2.col-sm-4
+                button.btn.btn.btn-primary(type='submit')
+                    span.ion-edit
+                    | Save Story

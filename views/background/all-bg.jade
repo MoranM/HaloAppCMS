@@ -1,0 +1,17 @@
+//
+   Created by L&M on 29/08/14.
+extends ../layout
+block content
+    .page-header
+        h3 Available Background Images
+        #background-container
+            each background, b in backgrounds
+                .bg-container.row.show-grid
+                    .col-sm-3
+                        span.author-name Background image name:
+                        br
+                        strong #{background.name}
+                    .col-sm-3.bg-image-container
+                        img.img-rounded(src='#{background.imageUrl}')
+                    .actions.col-sm-3
+                        a(href='/background/delete/#{background._id}') delete image

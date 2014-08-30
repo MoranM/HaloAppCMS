@@ -1,0 +1,15 @@
+extends ../layout
+block content
+    .page-header
+        h3 Add background
+    form#add-bg.form-horizontal(action='/background/add', method='POST', enctype="multipart/form-data")
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+            label.col-sm-2.control-label(for='background') New Background Image:
+            .col-sm-4.file-wrapper
+                input(type="file", name="background")
+        .form-group
+            .col-sm-offset-2.col-sm-4
+                button.btn.btn.btn-primary(type='submit')
+                    span.ion-edit
+                    | Save

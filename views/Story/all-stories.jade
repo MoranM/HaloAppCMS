@@ -9,13 +9,16 @@ block content
             each story, s in stories
                 .story-container.row.show-grid
                     .col-sm-3
-                        span.author-name author name #{story.authorName}
+                        span.author-name author name:
+                        br
+                        strong #{story.authorName}
                     .col-sm-3
                         | Content:
                         p.story-content #{story.content}
                     .col-sm-3.author-image-container
-                        img.img-circle(src='#{story.authorImageUrl}')
+                        a(href='/story/#{story._id}')
+                            img.img-circle(src='#{story.authorImageUrl}')
                     .actions.col-sm-3
                         a(href='/story/delete/#{story._id}') delete story
                         span.separator |
-                        a(href='#') edit
+                        a(href='/story/edit/#{story._id}') edit
