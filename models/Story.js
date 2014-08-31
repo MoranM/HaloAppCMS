@@ -5,6 +5,7 @@ var storySchema = new mongoose.Schema({
     authorImageUrl: {type: String},
     content: {type: String},
     rating: {type: String},
+    localId: {type: String, default: "en-us"},
     updated: { type: Date, default: Date.now },
     status: {type: String},//pending,approved,decline
     wasPushed:{type: Boolean, default: false},

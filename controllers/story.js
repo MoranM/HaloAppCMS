@@ -101,6 +101,7 @@ function update(storyId, req, res, next) {
         story.authorName = req.body.authorName || story.authorName;
         story.content = req.body.content || story.content;
         story.authorImageUrl = authorImage ? imageUrl : story.authorImageUrl;
+        story.localId = req.body.localId || story.localId;
 
         story.save(function (err) {
             if (err) return next(err);
@@ -132,6 +133,7 @@ function save(req, res, next) {
     var story = new Story({
         authorName: req.body.authorName,
         content: req.body.content,
+        localId: req.body.localId,
         authorImageUrl: extractImage(authorImage)
     });
 

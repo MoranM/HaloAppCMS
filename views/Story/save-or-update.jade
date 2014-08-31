@@ -1,7 +1,9 @@
 extends ../layout
 
 
+
 block content
+    - var storyLocalId = story?story.localId:''
     .page-header
         h3=story? 'Update Story' : 'Add Story'
 
@@ -12,7 +14,6 @@ block content
             label.col-sm-2.control-label(for='authorName') Author Name:
             .col-sm-4
                 input.form-control(type='text', name='authorName', id='authorNameField', placeholder='enter name', value=story?'#{story.authorName}':'')
-
         .form-group
             label.col-sm-2.control-label(for='content') Story:
             .col-sm-4
@@ -21,6 +22,13 @@ block content
                 else
                     textarea.form-control(rows='4', cols='50', name='content', form='upload-story')
                         | #{story.content}
+        .form-group
+            label.col-sm-2.control-label(for='authorName') Story Local:
+            .col-sm-4
+                select(name='localId')
+                    option(selected=storyLocalId==false) Choose Local
+                    option(value='en-us',name='en-us', selected=storyLocalId=='en-us') en-us
+                    option(value='he',name='he', selected=storyLocalId=='he') he
         .form-group
             label.col-sm-2.control-label(for='authorImage') Author Image
             .col-sm-4
