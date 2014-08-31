@@ -3,7 +3,7 @@ var path = require('path');
 
 module.exports = {
 
-  db: process.env.MONGODB|| 'mongodb://localhost:27017/light-hs',
+  db: process.env.MONGODB|| 'mongodb://localhost:27017/test',
   imagesPath: !!process.env.CLOUD_DIR
       ? path.join(process.env.CLOUD_DIR+"",'images')
       : './public/images',
