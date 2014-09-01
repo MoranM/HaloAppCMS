@@ -150,9 +150,10 @@ function extractImage(authorImage) {
     //or check if the path can be set in advance.
     var path = authorImage.path;
 
-    var splited = path.split('\\');
+    path = path.replace(/\\/g,'/');
+    var spliced = path.split('/');
 
-    return "/" + splited[splited.length - 1];
+    return "/" + spliced[spliced.length - 1];
 
 };
 

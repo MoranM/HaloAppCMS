@@ -65,9 +65,10 @@ exports.getAllBackgrounds = function (req, res, next) {
 };
 
 function extractImage(image) {
+    //todo: Extract to service
     var path = image.path;
+    path = path.replace(/\\/g,'/');
+    var spliced = path.split('/');
 
-    var splited = path.split('\\');
-
-    return "/" + splited[splited.length - 1];
+    return "/" + spliced[spliced.length - 1];
 };
