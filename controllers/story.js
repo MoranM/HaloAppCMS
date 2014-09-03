@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Story = require("../models/Story");
+var imageService = require("../services/imageService");
 var ObjectId = mongoose.Types.ObjectId;
 
 exports.getAllStories = function (req, res, next) {
@@ -16,6 +17,17 @@ exports.getAllStories = function (req, res, next) {
             stories: stories
         })
     });
+};
+
+exports.getAllAuthorsImages = function (req, res, next) {
+    Story.find({})
+        .select("authorImageUrl")
+        .exec(function(err, images){
+           if(err || images.length == 0){
+               res.json({});
+           }
+           res.json(images);
+        });
 };
 
 exports.deleteStory = function (req, res, next) {
@@ -90,7 +102,7 @@ exports.saveOrUpdate = function (req, res, next) {
 function update(storyId, req, res, next) {
     var authorImage = req.files.authorImage;
     if (authorImage) {
-        var imageUrl = extractImage(authorImage);
+        var imageUrl = imageService.extractImagePath(authorImage);
     }
 
     var _id = new ObjectId(storyId);
@@ -134,7 +146,7 @@ function save(req, res, next) {
         authorName: req.body.authorName,
         content: req.body.content,
         localId: req.body.localId,
-        authorImageUrl: extractImage(authorImage)
+        authorImageUrl: imageService.extractImagePath(authorImage)
     });
 
     story.save(function (err) {
@@ -144,16 +156,3 @@ function save(req, res, next) {
         res.redirect('/story/' + story._id);
     });
 };
-
-function extractImage(authorImage) {
-    //todo: add logic which saves the image to other location on disk.
-    //or check if the path can be set in advance.
-    var path = authorImage.path;
-
-    path = path.replace(/\\/g,'/');
-    var spliced = path.split('/');
-
-    return "/" + spliced[spliced.length - 1];
-
-};
-

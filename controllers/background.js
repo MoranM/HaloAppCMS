@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var imageService = require("../services/imageService");
 var Background = require("../models/Background");
 
 
@@ -17,7 +17,7 @@ exports.postAddBackground = function (req, res, next) {
     }
 
     var bg = new Background({
-        imageUrl: extractImage(bgImage),
+        imageUrl: imageService.extractImagePath(bgImage),
         name: bgImage.name
     });
 
@@ -62,13 +62,4 @@ exports.getAllBackgrounds = function (req, res, next) {
             backgrounds: backgrounds
         })
     });
-};
-
-function extractImage(image) {
-    //todo: Extract to service
-    var path = image.path;
-    path = path.replace(/\\/g,'/');
-    var spliced = path.split('/');
-
-    return "/" + spliced[spliced.length - 1];
 };
