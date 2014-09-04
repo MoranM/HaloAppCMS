@@ -20,13 +20,12 @@ exports.getAllStories = function (req, res, next) {
 };
 
 exports.getAllAuthorsImages = function (req, res, next) {
-    Story.find({})
-        .select("authorImageUrl")
-        .exec(function(err, images){
-           if(err || images.length == 0){
-               res.json({});
-           }
-           res.json(images);
+    Story.distinct("authorImageUrl")
+        .exec(function (err, images) {
+            if (err || images.length == 0) {
+                res.json({});
+            }
+            res.json(images);
         });
 };
 
@@ -55,7 +54,7 @@ exports.getAddStory = function (req, res) {
     })
 };
 
-exports.editStory = function(req,res,next){
+exports.editStory = function (req, res, next) {
     var storyId = req.params.id;
     if (!storyId) {
         res.render('story/save-or-update', {
@@ -96,14 +95,16 @@ exports.saveOrUpdate = function (req, res, next) {
     if (storyId)
         return update(storyId, req, res, next);
 
-    return save(req,res,next);
+    return save(req, res, next);
 };
 
 function update(storyId, req, res, next) {
-    var authorImage = req.files.authorImage;
-    if (authorImage) {
-        var imageUrl = imageService.extractImagePath(authorImage);
-    }
+    var existingImage = req.body.existingAuthorImage;
+    var authorImage = existingImage || req.files.authorImage;
+
+    var imageUrl = authorImage && !existingImage
+        ? imageService.extractImagePath(authorImage)
+        : existingImage;
 
     var _id = new ObjectId(storyId);
 
@@ -134,10 +135,10 @@ function save(req, res, next) {
         req.flash('errors', errors);
         res.redirect('/story/save-or-update');
     }
-
+    var existingImage = req.body.existingAuthorImage;
     var authorImage = req.files.authorImage;
 
-    if (!authorImage) {
+    if (!authorImage && !existingImage) {
         req.flash('errors', {msg: "author image is required (until Shmulik provides default anonymous author image)"});
         return res.redirect('/story/save-or-update');
     }
@@ -146,7 +147,7 @@ function save(req, res, next) {
         authorName: req.body.authorName,
         content: req.body.content,
         localId: req.body.localId,
-        authorImageUrl: imageService.extractImagePath(authorImage)
+        authorImageUrl: existingImage || imageService.extractImagePath(authorImage)
     });
 
     story.save(function (err) {

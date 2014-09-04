@@ -10,6 +10,7 @@ block content
     form#upload-story.form-horizontal(action='/story/save-or-update', method='POST', enctype="multipart/form-data")
         input(type='hidden', name='_csrf', value=_csrf)
         input(type='hidden', name='_id', value=story?'#{story._id}':'')
+        input#existing-author-image(type='hidden', name='existingAuthorImage', value='')
         .form-group
             label.col-sm-2.control-label(for='authorName') Author Name:
             .col-sm-4

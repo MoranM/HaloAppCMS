@@ -21,13 +21,14 @@ function initAuthorsImageSectionBox() {
                 .done(function (images) {
                 var len = images.length;
                 for (var i = 0; i < len; i++) {
-                    var src = images[i].authorImageUrl;
+                    var src = images[i];
                     modalBody.append($("<div></div>").addClass("image-wrapper").html('<img class="img-rounded" src=' + src + ' />'));
                 }
 
                 modal.on("click", "img", function(){
                     var imageSrc = $(this).attr("src");
                     formScope.find(".selected-image-container img").attr("src", imageSrc);
+                    $("#existing-author-image").val(imageSrc);
                     modal.modal("hide");
                 });
                 wasCalled = true;
