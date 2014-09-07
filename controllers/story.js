@@ -19,6 +19,21 @@ exports.getAllStories = function (req, res, next) {
     });
 };
 
+
+exports.getAllStoriesJson = function (req, res, next) {
+    var page = req.param("page") || 0;
+    var pageSize = req.param("pageSize") || 10;
+
+    Story.find()
+        .limit(pageSize)
+        .skip(page * pageSize)
+        .exec(function (err, stories) {
+            if (err) return res.json(getErrorObj(err, "unable to fetch stories"));
+
+            res.json(stories);
+        });
+};
+
 exports.getAllAuthorsImages = function (req, res, next) {
     Story.distinct("authorImageUrl")
         .exec(function (err, images) {
@@ -157,3 +172,10 @@ function save(req, res, next) {
         res.redirect('/story/' + story._id);
     });
 };
+
+function getErrorObj(err, msg) {
+    return {
+        err: err,
+        msg: msg
+    }
+}

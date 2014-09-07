@@ -22,3 +22,4 @@ node_modules
 Thumbs.db
 
 config/secrets.js
+versions/*

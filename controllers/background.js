@@ -48,6 +48,21 @@ exports.deleteBackground = function (req, res, next) {
     });
 };
 
+exports.getAllBackgroundsJson = function (req, res, next) {
+    var page = req.param("page") || 0;
+    var pageSize = req.param("pageSize") || 10;
+
+    Background.find()
+        .select("imageUrl")
+        .limit(pageSize)
+        .skip(page * pageSize)
+        .exec(function (err, backgrounds) {
+            if (err) return next(err);
+
+            res.json(backgrounds);
+        });
+};
+
 exports.getAllBackgrounds = function (req, res, next) {
     Background.find(function (err, backgrounds) {
         if (err) return next(err);
