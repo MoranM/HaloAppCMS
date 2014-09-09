@@ -49,6 +49,16 @@ exports.deleteBackground = function (req, res, next) {
 };
 
 exports.getAllBackgroundsJson = function (req, res, next) {
+    Background.distinct("imageUrl")
+        .exec(function (err, images) {
+            if (err || images.length == 0) {
+                res.json({});
+            }
+            res.json(images);
+        });
+};
+
+exports.getBackgroundsJson = function (req, res, next) {
     var page = req.param("page") || 0;
     var pageSize = req.param("pageSize") || 10;
 
@@ -59,7 +69,9 @@ exports.getAllBackgroundsJson = function (req, res, next) {
         .exec(function (err, backgrounds) {
             if (err) return next(err);
 
-            res.json(backgrounds);
+            res.json({
+                backgrounds:backgrounds
+            });
         });
 };
 

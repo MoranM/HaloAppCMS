@@ -4,6 +4,7 @@ extends ../layout
 
 block content
     - var storyLocalId = story?story.localId:''
+    - var storyBg = story?story.backgroundImageUrl:''
     .page-header
         h3=story? 'Update Story' : 'Add Story'
 
@@ -11,6 +12,7 @@ block content
         input(type='hidden', name='_csrf', value=_csrf)
         input(type='hidden', name='_id', value=story?'#{story._id}':'')
         input#existing-author-image(type='hidden', name='existingAuthorImage', value='')
+        input#background-image(type='hidden', name='backgroundImage', value=storyBg?'#{story.backgroundImageUrl}':'')
         .form-group
             label.col-sm-2.control-label(for='authorName') Author Name:
             .col-sm-4
@@ -34,17 +36,35 @@ block content
             .col-sm-4
                 input(type="file", name="authorImage")
         .form-group
-            label.col-sm-2.control-label(for='authorImage') Selec from existing images
+            label.col-sm-2.control-label(for='authorImage') Select from existing images
             .col-sm-4
-                span#get-all-images-btn.btn.btn-info pick an image
+                span#get-all-images-btn.btn.btn-info Select an image
                 .selected-image-container
-                    img
+                    img(src=story?'#{story.authorImageUrl}':'')
+        .form-group
+            label.col-sm-2.control-label Select story background
+            .col-sm-4
+                span#get-all-backgrounds-btn.btn.btn-info Select background
+                .selected-bg-container
+                    img(src=storyBg?'#{story.backgroundImageUrl}':'')
 
         .form-group
             .col-sm-offset-2.col-sm-4
                 button.btn.btn.btn-primary(type='submit')
                     span.ion-edit
                     | Save Story
+        #pick-image-background-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal')
+                            span(aria-hidden='true') ×
+                            span.sr-only Close
+                        h4#myModalLabel.modal-title Pick an Image
+                    .modal-body.clearfix
+                    .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close
+
         #pick-image-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
             .modal-dialog
                 .modal-content

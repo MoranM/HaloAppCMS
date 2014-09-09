@@ -6,9 +6,10 @@ module.exports = function (app) {
     app.get('/background/add', passportConf.isAuthenticated, bgController.getAddBackground);
     app.post('/background/add', passportConf.isAuthenticated, bgController.postAddBackground);
     app.get('/background/delete/:id', passportConf.isAuthenticated, bgController.deleteBackground);
-
+    app.get('/background/delete/:id', passportConf.isAuthenticated, bgController.deleteBackground);
+    app.get('/background/get-all-backgrounds-url', passportConf.isAuthenticated, bgController.getAllBackgroundsJson);
 
     //Api server
 
-    app.get('/api/background/all', bgController.getAllBackgroundsJson);
+    app.get('/api/background/all', bgController.getBackgroundsJson);
 }

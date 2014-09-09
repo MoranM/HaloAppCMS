@@ -30,7 +30,9 @@ exports.getAllStoriesJson = function (req, res, next) {
         .exec(function (err, stories) {
             if (err) return res.json(getErrorObj(err, "unable to fetch stories"));
 
-            res.json(stories);
+            res.json({
+                stories: stories
+            });
         });
 };
 
@@ -105,6 +107,15 @@ exports.getStory = function (req, res, next) {
 };
 
 exports.saveOrUpdate = function (req, res, next) {
+    req.assert('backgroundImage', 'Story background Image must be provided').notEmpty();
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+        req.flash('errors', errors);
+        res.redirect('/story/save-or-update');
+    }
+
     var storyId = req.body._id;
 
     if (storyId)
@@ -130,6 +141,7 @@ function update(storyId, req, res, next) {
         story.content = req.body.content || story.content;
         story.authorImageUrl = authorImage ? imageUrl : story.authorImageUrl;
         story.localId = req.body.localId || story.localId;
+        story.backgroundImageUrl = req.body.backgroundImage
 
         story.save(function (err) {
             if (err) return next(err);
@@ -143,6 +155,7 @@ function update(storyId, req, res, next) {
 function save(req, res, next) {
     req.assert('authorName', 'required').notEmpty();
     req.assert('content', 'Story body must be provided').notEmpty();
+    req.assert('backgroundImage', 'Story background Image must be provided').notEmpty();
 
     var errors = req.validationErrors();
 
@@ -162,6 +175,7 @@ function save(req, res, next) {
         authorName: req.body.authorName,
         content: req.body.content,
         localId: req.body.localId,
+        backgroundImageUrl: req.body.backgroundImage,
         authorImageUrl: existingImage || imageService.extractImagePath(authorImage)
     });
 

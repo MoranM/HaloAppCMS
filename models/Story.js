@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var storySchema = new mongoose.Schema({
     authorName: {type: String},
     authorImageUrl: {type: String},
+    backgroundImageUrl: {type: String},
     content: {type: String},
     rating: {type: String},
     localId: {type: String, default: "en-us"},
